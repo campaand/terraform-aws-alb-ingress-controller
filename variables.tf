@@ -1,23 +1,19 @@
 # Created by Andrea Campice
 
-variable "oidc_provider" {
-  type        = string
-  description = "Additional settings which will be passed to the Helm chart values"
-}
-
 variable "vpc_id" {
   type        = string
-  description = "Additional settings which will be passed to the Helm chart values"
+  description = "EKS Cluster VPC ID"
 }
 
 variable "cluster_name" {
   type        = string
-  description = "Additional settings which will be passed to the Helm chart values"
+  description = "EKS Cluster Name / ID"
 }
 
 variable "namespace" {
-  type    = string
-  default = "kube-system"
+  type        = string
+  default     = "kube-system"
+  description = "Namespace where ALB Controller will be created"
 }
 
 variable "helm_chart_version" {

@@ -16,11 +16,10 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster.
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "0.1.0"
+  version = "1.0.0"
 
   cluster_name  = var.cluster_name
   vpc_id        = module.vpc.vpc_id
-  oidc_provider = module.eks.odic_provider
 }
 ```
 
@@ -31,12 +30,11 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster using different cus
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "0.1.0"
+  version = "1.0.0"
 
   namespace     = "your-custom-namespace"
   cluster_name  = var.cluster_name
   vpc_id        = module.vpc.vpc_id
-  oidc_provider = module.eks.odic_provider
 }
 ```
 
@@ -49,11 +47,10 @@ If you need to insert custom annotations for Ingresses and Services, consult [AL
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "0.1.0"
+  version = "1.0.0"
 
   cluster_name  = var.cluster_name
   vpc_id        = module.vpc.vpc_id
-  oidc_provider = module.eks.odic_provider
   
   helm_chart_version = "1.4.1"
 

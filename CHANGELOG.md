@@ -11,6 +11,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * First Release
 
+# 0.2.0 - (07 April 2022)
+
+## Changes
+
+* Added `data/aws_eks_cluster.this` to get dynamically oidc provider
+* Added `locals.tf` file to manage oidc provider without https:// prefix
+* Removed `oidc_provider` variable
+
+## Note
+
+* Added descriptions for variables
+
 # 0.1.0 - (07 April 2022)
 
 ## Breaking Changes

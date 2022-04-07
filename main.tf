@@ -3,6 +3,10 @@
 data "aws_caller_identity" "current" {}
 data "aws_region" "current" {}
 
+data "aws_eks_cluster" "this" {
+  name  = var.cluster_name
+}
+
 resource "aws_iam_policy" "this" {
   name        = "AWSLoadBalancerControllerIAMPolicy"
   description = "AWS Load Balancer Controller Policy"
@@ -12,7 +16,7 @@ resource "aws_iam_policy" "this" {
 resource "aws_iam_role" "this" {
   name               = "AWSEKSLoadBalancerControllerRole"
   description        = "AWS EKS Load Balancer Controller Role"
-  assume_role_policy = templatefile("${path.module}/load-balancer-role-trust-policy.tftpl", { "customer_account_id" = "${data.aws_caller_identity.current.account_id}", "oidc_provider" = "${var.oidc_provider}", "namespace" = "${var.namespace}" })
+  assume_role_policy = templatefile("${path.module}/load-balancer-role-trust-policy.tftpl", { "customer_account_id" = "${data.aws_caller_identity.current.account_id}", "oidc_provider" = "${local.oidc_provider}", "namespace" = "${var.namespace}" })
 }
 
 resource "aws_iam_role_policy_attachment" "this" {

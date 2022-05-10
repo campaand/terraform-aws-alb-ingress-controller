@@ -44,6 +44,19 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster using different hel
 
 If you need to insert custom annotations for Ingresses and Services, consult [ALB Controller Annotations](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/).
 
+Helm Values already setted:
+
+```hcl
+default_helm_values = {
+  "image.repository" = "docker.io/amazon/aws-alb-ingress-controller", 
+  "clusterName" = "${var.cluster_name}",
+  "serviceAccount.create" = "false",
+  "serviceAccount.name" = "${var.service_account_name}"
+}
+```
+
+You can add or overwrite this values using the settings variable, if you add a value with the same key, you overwrote the default one.
+
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"

@@ -10,7 +10,7 @@
             "Condition": {
                 "StringEquals": {
                     "${oidc_provider}:aud": "sts.amazonaws.com",
-                    "${oidc_provider}:sub": "system:serviceaccount:${namespace}:aws-load-balancer-controller"
+                    "${oidc_provider}:sub": "system:serviceaccount:${namespace}:${service_account_name}"
                 }
             }
         }

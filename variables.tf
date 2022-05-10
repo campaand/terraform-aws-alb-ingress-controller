@@ -16,6 +16,12 @@ variable "namespace" {
   description = "Namespace where ALB Controller will be created"
 }
 
+variable "service_account_name" {
+  type        = string
+  default     = "aws-load-balancer-controller"
+  description = "Service Account Name for ALB Controller"
+}
+
 variable "helm_chart_version" {
   type        = string
   default     = "1.4.1"

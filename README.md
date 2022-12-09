@@ -3,7 +3,7 @@
 This Terraform module can be used to install the [AWS ALB Ingress Controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller)
 into a Kubernetes cluster.
 
-IMPORTANT WARNING: considering that the kubernetes provider, in order to run the plan and apply, must be able to access the cluster api, it is not possible to insert the module within the same file and / or terraform configuration that creates the EKS cluster as it is not the cluster would exist. 
+IMPORTANT WARNING: considering that the kubernetes provider, in order to run the plan and apply, must be able to access the cluster api, it is not possible to insert the module within the same file and / or terraform configuration that creates the EKS cluster as it is not the cluster would exist.
 
 For this reason, I recommend separating the terraform configurations and launching the one containing this module and other modules like this one at a later time. [HERE THE ISSUE DIRECTLY FROM KUBERNETES PROVIDER](https://github.com/hashicorp/terraform-provider-kubernetes-alpha/issues/199#issuecomment-832614387)
 
@@ -16,10 +16,10 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster.
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "~> 0.2"
+  version = "~> 1.0"
 
-  cluster_name  = var.cluster_name
-  vpc_id        = module.vpc.vpc_id
+  cluster_name = var.cluster_name
+  vpc_id       = module.vpc.vpc_id
 }
 ```
 
@@ -30,11 +30,11 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster using different cus
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "~> 0.2"
+  version = "~> 1.0"
 
-  namespace     = "your-custom-namespace"
-  cluster_name  = var.cluster_name
-  vpc_id        = module.vpc.vpc_id
+  namespace    = "your-custom-namespace"
+  cluster_name = var.cluster_name
+  vpc_id       = module.vpc.vpc_id
 }
 ```
 
@@ -60,12 +60,12 @@ You can add or overwrite this values using the settings variable, if you add a v
 ```hcl
 module "alb_controller" {
   source  = "campaand/alb-controller/aws"
-  version = "~> 0.2"
+  version = "~> 1.0"
 
-  cluster_name  = var.cluster_name
-  vpc_id        = module.vpc.vpc_id
+  cluster_name = var.cluster_name
+  vpc_id       = module.vpc.vpc_id
   
-  helm_chart_version = "1.4.1"
+  helm_chart_version = "1.4.6"
 
   settings = {
       key1 = value1,

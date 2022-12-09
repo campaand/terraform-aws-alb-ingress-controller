@@ -24,7 +24,6 @@ variable "service_account_name" {
 
 variable "helm_chart_version" {
   type        = string
-  default     = "1.4.1"
   description = "Version for Helm Chart, not Application Version, https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller"
 }
 

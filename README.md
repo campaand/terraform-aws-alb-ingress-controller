@@ -1,5 +1,4 @@
-# Terraform module: AWS ALB Ingress Controller
-
+# AWS EKS Load Balancer Controller
 This Terraform module can be used to install the [AWS ALB Ingress Controller](https://github.com/kubernetes-sigs/aws-alb-ingress-controller)
 into a Kubernetes cluster.
 
@@ -8,9 +7,7 @@ IMPORTANT WARNING: considering that the kubernetes provider, in order to run the
 For this reason, I recommend separating the terraform configurations and launching the one containing this module and other modules like this one at a later time. [HERE THE ISSUE DIRECTLY FROM KUBERNETES PROVIDER](https://github.com/hashicorp/terraform-provider-kubernetes-alpha/issues/199#issuecomment-832614387)
 
 ## Examples
-
 ### EKS Basic Deployment
-
 To deploy the AWS ALB Ingress Controller into an EKS cluster.
 
 ```hcl
@@ -19,12 +16,10 @@ module "alb_controller" {
   version = "~> 1.0"
 
   cluster_name = var.cluster_name
-  vpc_id       = module.vpc.vpc_id
 }
 ```
 
 ### EKS Deployment with Different Namespace
-
 To deploy the AWS ALB Ingress Controller into an EKS cluster using different custom namespace, if not exist, the namespace will be created.
 
 ```hcl
@@ -34,12 +29,10 @@ module "alb_controller" {
 
   namespace    = "your-custom-namespace"
   cluster_name = var.cluster_name
-  vpc_id       = module.vpc.vpc_id
 }
 ```
 
 ### EKS Deployment with Different Helm Settings
-
 To deploy the AWS ALB Ingress Controller into an EKS cluster using different helm parameters based on [Helm Chart Values](https://github.com/kubernetes-sigs/aws-alb-ingress-controller).
 
 If you need to insert custom annotations for Ingresses and Services, consult [ALB Controller Annotations](https://kubernetes-sigs.github.io/aws-load-balancer-controller/v2.2/guide/ingress/annotations/).
@@ -48,10 +41,10 @@ Helm Values already setted:
 
 ```hcl
 default_helm_values = {
-  "image.repository" = "docker.io/amazon/aws-alb-ingress-controller", 
-  "clusterName" = "${var.cluster_name}",
-  "serviceAccount.create" = "false",
+  "clusterName"         = "${var.cluster_name}",
   "serviceAccount.name" = "${var.service_account_name}"
+
+  "serviceAccount.annotations.eks\\.amazonaws\\.com/role-arn" = "${aws_iam_role.this.arn}"
 }
 ```
 
@@ -63,7 +56,6 @@ module "alb_controller" {
   version = "~> 1.0"
 
   cluster_name = var.cluster_name
-  vpc_id       = module.vpc.vpc_id
   
   helm_chart_version = "1.4.6"
 
@@ -77,5 +69,4 @@ module "alb_controller" {
 ```
 
 ## Test your infrastructure
-
-https://docs.aws.amazon.com/eks/latest/userguide/alb-ingress.html#application-load-balancer-sample-application
+Here some examples to test your ALB Controller: [Official Repository Link](https://github.com/kubernetes-sigs/aws-load-balancer-controller/tree/main/docs/examples)

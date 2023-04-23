@@ -1,8 +1,13 @@
 # Created by Andrea Campice
 
-variable "vpc_id" {
+variable "suffix" {
   type        = string
-  description = "EKS Cluster VPC ID"
+  description = "Suffix to add to resource names"
+  default     = ""
+  validation {
+    condition     = can(regex("^[A-Za-z0-9]*$", var.suffix))
+    error_message = "The suffix must not contains special characters."
+  }
 }
 
 variable "cluster_name" {
@@ -16,6 +21,12 @@ variable "namespace" {
   description = "Namespace where ALB Controller will be created"
 }
 
+variable "controller_iam_role_name" {
+  type        = string
+  default     = "AWSEKSLoadBalancerControllerRole"
+  description = "IAM Role Name for ALB Controller"
+}
+
 variable "service_account_name" {
   type        = string
   default     = "aws-load-balancer-controller"
@@ -24,6 +35,7 @@ variable "service_account_name" {
 
 variable "helm_chart_version" {
   type        = string
+  default     = ""
   description = "Version for Helm Chart, not Application Version, https://artifacthub.io/packages/helm/aws/aws-load-balancer-controller"
 }
 

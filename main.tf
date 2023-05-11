@@ -13,7 +13,7 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy" "this" {
   name   = "AWSLoadBalancerControllerIAMPolicy"
-  role   = aws_iam_role.this.arn
+  role   = aws_iam_role.this.name
   policy = file("${path.module}/load-balancer-controller-policy.json")
 }
 

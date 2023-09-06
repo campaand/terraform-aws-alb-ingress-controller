@@ -5,6 +5,10 @@ data "aws_region" "current" {}
 
 data "aws_eks_cluster" "this" { name = var.cluster_name }
 
+data "http" "alb_policy" {
+  url = "https://raw.githubusercontent.com/kubernetes-sigs/aws-load-balancer-controller/${helm_release.alb_ingress_controller.metadata[0].app_version}/docs/install/iam_policy.json"
+}
+
 resource "aws_iam_role" "this" {
   name               = var.controller_iam_role_name
   description        = "AWS EKS Load Balancer Controller Role"
@@ -13,8 +17,8 @@ resource "aws_iam_role" "this" {
 
 resource "aws_iam_role_policy" "this" {
   name   = "AWSLoadBalancerControllerIAMPolicy"
-  role   = aws_iam_role.this.name
-  policy = file("${path.module}/load-balancer-controller-policy.json")
+  role   = aws_iam_role.this.id
+  policy = data.http.alb_policy.response_body
 }
 
 resource "helm_release" "alb_ingress_controller" {
@@ -23,10 +27,11 @@ resource "helm_release" "alb_ingress_controller" {
   namespace        = var.namespace
   name             = "aws-load-balancer-controller"
   repository       = "https://aws.github.io/eks-charts"
-  version          = var.helm_chart_version
+  version          = var.helm_chart_version != "" ? var.helm_chart_version : ""
   cleanup_on_fail  = true
   recreate_pods    = true
   replace          = true
+  values           = var.helm_chart_values
   dynamic "set" {
     for_each = local.helm_values
     content {

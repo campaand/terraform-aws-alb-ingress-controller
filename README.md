@@ -32,6 +32,38 @@ module "alb_controller" {
 }
 ```
 
+### EKS Deployment using EKS POD Identity
+To deploy the AWS ALB Ingress Controller into an EKS cluster using EKS POD Identity Authentication.
+
+NOTE: if you want to change from IRSA to POD Identity, or vice-versa, you must have the "eks-pod-identity-agent" addon installed and after applying you will have to roll out the aws-load-balancer-controller deployment.
+
+```hcl
+module "alb_controller" {
+  source  = "campaand/alb-controller/aws"
+  version = "~> 2.0"
+
+  namespace    = "your-custom-namespace"
+  cluster_name = var.cluster_name
+
+  use_eks_pod_identity = true
+}
+```
+
+You can also use your custom IAM Role for POD IDENTITY, but you need to properly configure with correct trusted entities and policy.
+
+```hcl
+module "alb_controller" {
+  source  = "campaand/alb-controller/aws"
+  version = "~> 2.0"
+
+  namespace    = "your-custom-namespace"
+  cluster_name = var.cluster_name
+
+  use_eks_pod_identity = true
+  custom_eks_pod_identity_iam_role_arn = "arn:aws:iam::01234567890:role/test-eks-identity-alb"
+}
+```
+
 ### EKS Deployment with Different Helm Settings
 To deploy the AWS ALB Ingress Controller into an EKS cluster using different helm parameters based on [Helm Chart Values](https://github.com/kubernetes-sigs/aws-alb-ingress-controller).
 

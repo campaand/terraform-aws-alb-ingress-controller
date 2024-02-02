@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+# 2.1.0 - (02 February 2024)
+
+## Changes
+* Now the module support the creation of EKS POD Identity Role or you can pass your properly configured IAM Role
+* Added `aws_eks_pod_identity_association.this` resource to manage pod identity association
+* Added `use_eks_pod_identity` and `custom_eks_pod_identity_iam_role_arn` variables
+
+## Note
+* You can continue to use your module with 2.X major version, note that some resources will change names within your terraform state. For example `module.aws_lb_controller.aws_iam_role.this has moved to module.aws_lb_controller.aws_iam_role.this[0]` and `module.aws_lb_controller.aws_iam_role_policy.this has moved to module.aws_lb_controller.aws_iam_role_policy.this[0]`
+* `aws_iam_role_arn` change name within your terraform state
+
 # 2.0.0 - (06 September 2023)
 
 ## Major Changes

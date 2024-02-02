@@ -10,14 +10,16 @@ data "http" "alb_policy" {
 }
 
 resource "aws_iam_role" "this" {
-  name               = var.controller_iam_role_name
+  count              = var.use_eks_pod_identity && var.custom_eks_pod_identity_iam_role_arn != "" ? 0 : 1
+  name               = local.controller_iam_role_name
   description        = "AWS EKS Load Balancer Controller Role"
-  assume_role_policy = templatefile("${path.module}/load-balancer-role-trust-policy.tftpl", { "account_id" = "${data.aws_caller_identity.current.account_id}", "oidc_provider" = "${local.oidc_provider}", "namespace" = "${var.namespace}", "service_account_name" = "${var.service_account_name}" })
+  assume_role_policy = var.use_eks_pod_identity ? data.aws_iam_policy_document.eks_auth_policy_document.json : templatefile("${path.module}/load-balancer-role-trust-policy.tftpl", { "account_id" = "${data.aws_caller_identity.current.account_id}", "oidc_provider" = "${local.oidc_provider}", "namespace" = "${var.namespace}", "service_account_name" = "${var.service_account_name}" })
 }
 
 resource "aws_iam_role_policy" "this" {
+  count  = var.use_eks_pod_identity && var.custom_eks_pod_identity_iam_role_arn != "" ? 0 : 1
   name   = "AWSLoadBalancerControllerIAMPolicy"
-  role   = aws_iam_role.this.id
+  role   = aws_iam_role.this[0].id
   policy = data.http.alb_policy.response_body
 }
 
@@ -39,4 +41,12 @@ resource "helm_release" "alb_ingress_controller" {
       value = set.value
     }
   }
+}
+
+resource "aws_eks_pod_identity_association" "this" {
+  count           = var.use_eks_pod_identity ? 1 : 0
+  cluster_name    = var.cluster_name
+  namespace       = var.namespace
+  service_account = var.service_account_name
+  role_arn        = var.custom_eks_pod_identity_iam_role_arn == "" ? aws_iam_role.this[0].arn : var.custom_eks_pod_identity_iam_role_arn
 }

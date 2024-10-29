@@ -12,7 +12,7 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster.
 
 ```hcl
 module "alb_controller" {
-  source  = "campaand/alb-controller/aws"
+  source  = "campaand/alb-ingress-controller/aws"
   version = "~> 2.0"
 
   cluster_name = var.cluster_name
@@ -24,7 +24,7 @@ To deploy the AWS ALB Ingress Controller into an EKS cluster using different cus
 
 ```hcl
 module "alb_controller" {
-  source  = "campaand/alb-controller/aws"
+  source  = "campaand/alb-ingress-controller/aws"
   version = "~> 2.0"
 
   namespace    = "your-custom-namespace"
@@ -39,7 +39,7 @@ NOTE: if you want to change from IRSA to POD Identity, or vice-versa, you must h
 
 ```hcl
 module "alb_controller" {
-  source  = "campaand/alb-controller/aws"
+  source  = "campaand/alb-ingress-controller/aws"
   version = "~> 2.0"
 
   namespace    = "your-custom-namespace"
@@ -53,7 +53,7 @@ You can also use your custom IAM Role for POD IDENTITY, but you need to properly
 
 ```hcl
 module "alb_controller" {
-  source  = "campaand/alb-controller/aws"
+  source  = "campaand/alb-ingress-controller/aws"
   version = "~> 2.0"
 
   namespace    = "your-custom-namespace"
@@ -84,7 +84,7 @@ You can add or overwrite this values using the settings variable, if you add a v
 
 ```hcl
 module "alb_controller" {
-  source  = "campaand/alb-controller/aws"
+  source  = "campaand/alb-ingress-controller/aws"
   version = "~> 2.0"
 
   cluster_name = var.cluster_name
